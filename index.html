@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UK Anthropology Watch — Tracking Changes to Anthropology Programmes in UK Higher Education</title>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.4.0/css/fixedHeader.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;600;700&family=Source+Serif+4:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #1a3a5c;
+    --primary-light: #2a5a8c;
+    --accent: #c0392b;
+    --accent-warm: #d35400;
+    --success: #27ae60;
+    --warning: #f39c12;
+    --danger: #e74c3c;
+    --muted: #7f8c8d;
+    --bg: #fafbfc;
+    --bg-card: #ffffff;
+    --text: #2c3e50;
+    --text-light: #5d6d7e;
+    --border: #dce1e6;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* HEADER */
+  .site-header {
+    background: var(--primary);
+    color: white;
+    padding: 0;
+  }
+  .header-top {
+    background: rgba(0,0,0,0.15);
+    padding: 8px 0;
+    font-size: 0.85rem;
+  }
+  .header-top .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .header-top a { color: rgba(255,255,255,0.8); text-decoration: none; }
+  .header-top a:hover { color: white; }
+
+  .header-main {
+    padding: 48px 0 40px;
+  }
+  .header-main h1 {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 2.6rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  .header-main .subtitle {
+    font-size: 1.15rem;
+    font-weight: 300;
+    opacity: 0.9;
+    max-width: 700px;
+  }
+
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* NAV TABS */
+  .nav-tabs {
+    background: var(--primary-light);
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .nav-tabs .container {
+    display: flex;
+    gap: 0;
+  }
+  .nav-tab {
+    padding: 14px 24px;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  .nav-tab:hover { color: white; background: rgba(255,255,255,0.05); }
+  .nav-tab.active {
+    color: white;
+    border-bottom-color: var(--warning);
+    background: rgba(255,255,255,0.08);
+  }
+
+  /* STATS BAR */
+  .stats-bar {
+    background: white;
+    border-bottom: 1px solid var(--border);
+    padding: 20px 0;
+  }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+  }
+  .stat-item {
+    text-align: center;
+    padding: 12px;
+  }
+  .stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .stat-number.green { color: var(--success); }
+  .stat-number.amber { color: var(--warning); }
+  .stat-number.red { color: var(--danger); }
+  .stat-number.blue { color: var(--primary); }
+  .stat-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-light);
+    margin-top: 4px;
+  }
+
+  /* INTRO SECTION */
+  .intro-section {
+    padding: 40px 0 32px;
+  }
+  .intro-content {
+    max-width: 900px;
+  }
+  .intro-content h2 {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 1.6rem;
+    margin-bottom: 16px;
+    color: var(--primary);
+  }
+  .intro-content p {
+    margin-bottom: 14px;
+    color: var(--text-light);
+    font-size: 1.02rem;
+  }
+  .intro-content p:last-child { margin-bottom: 0; }
+
+  /* ACTION BUTTONS */
+  .action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 28px 0 12px;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+  }
+  .btn-primary:hover { background: var(--primary-light); }
+  .btn-outline {
+    background: white;
+    color: var(--primary);
+    border: 2px solid var(--primary);
+  }
+  .btn-outline:hover { background: var(--primary); color: white; }
+  .btn-danger {
+    background: var(--accent);
+    color: white;
+  }
+  .btn-danger:hover { background: #a93226; }
+  .btn svg { width: 18px; height: 18px; }
+
+  /* TABLE SECTION */
+  .table-section {
+    padding: 0 0 60px;
+  }
+  .table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .table-header h2 {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 1.4rem;
+    color: var(--primary);
+  }
+  .filter-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .pill {
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 2px solid var(--border);
+    background: white;
+    color: var(--text-light);
+    transition: all 0.2s;
+  }
+  .pill:hover, .pill.active { border-color: var(--primary); color: var(--primary); background: #eef3f8; }
+  .pill.active-green { border-color: var(--success); color: var(--success); background: #eafaf1; }
+  .pill.active-amber { border-color: var(--warning); color: #b7791f; background: #fef9e7; }
+  .pill.active-red { border-color: var(--danger); color: var(--danger); background: #fdedec; }
+
+  .table-wrap {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  /* DataTables overrides */
+  .dataTables_wrapper {
+    padding: 16px;
+  }
+  .dataTables_scrollHead,
+  .dataTables_scrollBody {
+    overflow: visible !important;
+  }
+  .dataTables_scroll {
+    overflow-x: auto;
+  }
+  table.dataTable {
+    border-collapse: collapse !important;
+    width: 100% !important;
+    table-layout: fixed;
+  }
+  table.dataTable thead th {
+    background: var(--primary);
+    color: white;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    padding: 12px 14px;
+    border-bottom: none;
+    white-space: nowrap;
+  }
+  table.dataTable thead th:hover {
+    background: var(--primary-light);
+  }
+  table.dataTable tbody td {
+    padding: 12px 14px;
+    font-size: 0.92rem;
+    border-bottom: 1px solid #f0f2f4;
+    vertical-align: top;
+    white-space: normal !important;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  table.dataTable tbody tr:hover {
+    background: #f7f9fb !important;
+  }
+  table.dataTable tbody tr.even {
+    background: #fafbfc;
+  }
+
+  /* Status badges */
+  .status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .status-active {
+    background: #d5f5e3;
+    color: #1e8449;
+  }
+  .status-threat {
+    background: #fdebd0;
+    color: #b7791f;
+  }
+  .status-cuts {
+    background: #fce4ec;
+    color: #c0392b;
+  }
+  .status-closed {
+    background: #f5b7b1;
+    color: #922b21;
+  }
+  .status-suspended {
+    background: #fadbd8;
+    color: #a93226;
+  }
+  .status-restructured {
+    background: #e8daef;
+    color: #6c3483;
+  }
+  .status-monitoring {
+    background: #fef9e7;
+    color: #7d6608;
+  }
+
+  /* Level badges */
+  .level-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    background: #eef3f8;
+    color: var(--primary);
+    margin: 1px 2px;
+  }
+
+  /* Institution name styling */
+  .inst-name {
+    font-weight: 600;
+    color: var(--primary);
+  }
+  .inst-link {
+    color: var(--primary);
+    text-decoration: none;
+  }
+  .inst-link:hover { text-decoration: underline; }
+
+  /* Region styling */
+  .region-tag {
+    font-size: 0.82rem;
+    color: var(--text-light);
+  }
+
+  /* Details column */
+  .detail-text {
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: var(--text-light);
+    min-width: 280px;
+    max-width: 420px;
+    white-space: normal !important;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  .source-link {
+    display: inline-block;
+    margin-top: 6px;
+    color: var(--primary-light);
+    font-size: 0.82rem;
+    text-decoration: none;
+    white-space: normal !important;
+    word-wrap: break-word;
+  }
+  .source-link:hover { text-decoration: underline; }
+
+  /* Last updated */
+  .last-updated {
+    text-align: right;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 16px;
+  }
+
+  /* FOOTER */
+  .site-footer {
+    background: var(--primary);
+    color: rgba(255,255,255,0.7);
+    padding: 40px 0;
+    font-size: 0.9rem;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 40px;
+  }
+  .footer-grid h3 {
+    color: white;
+    font-size: 1rem;
+    margin-bottom: 12px;
+  }
+  .footer-grid a {
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+  }
+  .footer-grid a:hover { color: white; }
+  .footer-grid ul { list-style: none; }
+  .footer-grid li { margin-bottom: 6px; }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin-top: 32px;
+    padding-top: 20px;
+    font-size: 0.85rem;
+  }
+
+  /* METHODOLOGY SECTION */
+  .methodology {
+    background: #f0f4f8;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    margin: 24px 0 32px;
+  }
+  .methodology h3 {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 1.1rem;
+    color: var(--primary);
+    margin-bottom: 10px;
+  }
+  .methodology p {
+    font-size: 0.92rem;
+    color: var(--text-light);
+    margin-bottom: 8px;
+  }
+  .methodology ul {
+    margin: 8px 0 8px 20px;
+    font-size: 0.92rem;
+    color: var(--text-light);
+  }
+  .methodology li { margin-bottom: 4px; }
+
+  /* Ensure all td text wraps */
+  table.dataTable td,
+  table.dataTable th {
+    white-space: normal !important;
+  }
+  table.dataTable thead th {
+    white-space: nowrap !important;
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .detail-text {
+      min-width: 220px;
+      max-width: 320px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .header-main { padding: 32px 0 28px; }
+    .header-main h1 { font-size: 1.8rem; }
+    .header-main .subtitle { font-size: 1rem; }
+    .header-top { display: none; }
+    .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+    .stats-grid { grid-template-columns: repeat(3, 1fr); }
+    .action-buttons { flex-direction: column; }
+    .btn { justify-content: center; }
+    .container { padding: 0 16px; }
+    .intro-section { padding: 28px 0 24px; }
+    .table-header { flex-direction: column; align-items: flex-start; }
+    .filter-pills { width: 100%; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; }
+    .dataTables_wrapper { padding: 10px; }
+    .dataTables_wrapper .dataTables_filter,
+    .dataTables_wrapper .dataTables_length {
+      float: none !important;
+      text-align: left !important;
+      margin-bottom: 8px;
+    }
+    .dataTables_filter input {
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+    table.dataTable tbody td {
+      padding: 10px 10px;
+      font-size: 0.85rem;
+    }
+    .detail-text {
+      min-width: 200px;
+      max-width: 260px;
+      font-size: 0.82rem;
+    }
+    .stat-number { font-size: 1.6rem; }
+    .stat-label { font-size: 0.72rem; }
+    .methodology { padding: 16px; }
+    .last-updated { text-align: left; font-size: 0.8rem; }
+    .nav-tabs .container { overflow-x: auto; }
+    .nav-tab { padding: 12px 16px; font-size: 0.85rem; white-space: nowrap; }
+  }
+
+  @media (max-width: 480px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .stat-item { padding: 8px; }
+    .header-main h1 { font-size: 1.5rem; }
+    .pill { padding: 5px 12px; font-size: 0.78rem; }
+  }
+
+  /* Ensure source column wraps */
+  td:last-child {
+    white-space: normal !important;
+    min-width: 100px;
+  }
+
+  /* Search highlight */
+  .highlight { background: #fff3cd; padding: 1px 2px; border-radius: 2px; }
+
+  /* DataTables search box styling */
+  .dataTables_filter input {
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 0.92rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .dataTables_filter input:focus {
+    border-color: var(--primary);
+  }
+  .dataTables_length select {
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 4px 8px;
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-top">
+    <div class="container">
+      <span>A project tracking changes to anthropology in UK higher education</span>
+    </div>
+  </div>
+  <div class="header-main">
+    <div class="container">
+      <h1>UK Anthropology Watch</h1>
+      <p class="subtitle">Documenting publicly reported changes to academic anthropology programmes across United Kingdom higher education institutions.</p>
+    </div>
+  </div>
+  <nav class="nav-tabs">
+    <div class="container">
+      <a class="nav-tab active" href="#tracker">Programme Tracker</a>
+      <a class="nav-tab" href="#about">About</a>
+      <a class="nav-tab" href="https://www.theasa.org/" target="_blank">ASA</a>
+      <a class="nav-tab" href="https://therai.org.uk/" target="_blank">RAI</a>
+    </div>
+  </nav>
+</header>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number blue" id="stat-total">35</div>
+        <div class="stat-label">Programmes Tracked</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number green" id="stat-active">28</div>
+        <div class="stat-label">Active</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number amber" id="stat-threat">4</div>
+        <div class="stat-label">Under Pressure</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number red" id="stat-closed">3</div>
+        <div class="stat-label">Closed / Discontinued</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number blue">4</div>
+        <div class="stat-label">UK Nations Covered</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INTRO SECTION -->
+<section class="intro-section" id="about">
+  <div class="container">
+    <div class="intro-content">
+      <h2>Why Track Anthropology Programmes?</h2>
+      <p>Anthropology programmes across the United Kingdom are facing unprecedented pressures. Financial deficits, declining enrolments in humanities and social sciences, institutional restructuring, and shifts in government higher education policy are combining to reshape the disciplinary landscape. Departments that have operated for decades are being merged, reduced, or closed entirely.</p>
+      <p>UK Anthropology Watch provides a centralised, transparent record of these institutional changes. Modelled on the American Anthropological Association's <a href="https://americananthro.org/anthropology-watch/" target="_blank">Anthropology Watch</a> tracker, this project aims to support informed public discussion, enable comparative analysis across institutions, and preserve an accurate historical record of what is happening to anthropology in UK higher education.</p>
+      <p>In September 2025, the British Academy's <em>Cold Spots</em> report found that anthropology is among the SHAPE subjects showing significant decline in provision, with large geographic gaps emerging across Scotland, northern England, the East Midlands, and Wales. The discipline's future depends on clear-eyed documentation of these trends.</p>
+
+      <div class="action-buttons">
+        <a class="btn btn-primary" href="mailto:jamie.cross@glasgow.ac.uk?subject=Programme%20submission">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+          Submit a Programme Update
+        </a>
+        <a class="btn btn-outline" href="https://www.theasa.org/" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+          ASA Condition of UK Anthropology Report
+        </a>
+        <a class="btn btn-danger" href="https://www.thebritishacademy.ac.uk/policy-and-research/british-academy-shape-observatory/cold-spots-mapping-inequality-in-shape-provision/" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          British Academy Cold Spots Report
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAMME TRACKER TABLE -->
+<section class="table-section" id="tracker">
+  <div class="container">
+    <div class="table-header">
+      <h2>Programme Tracker</h2>
+      <div class="filter-pills">
+        <button class="pill active" onclick="filterTable('')">All</button>
+        <button class="pill" onclick="filterTable('Active')">Active</button>
+        <button class="pill" onclick="filterTable('Under pressure')">Under Pressure</button>
+        <button class="pill" onclick="filterTable('Closed')">Closed</button>
+        <button class="pill" onclick="filterTable('Staff reductions')">Staff Reductions</button>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table id="anthro-watch" class="display" style="width:100%">
+        <thead>
+          <tr>
+            <th>Institution</th>
+            <th>Region</th>
+            <th>Programme</th>
+            <th>Level</th>
+            <th>Status</th>
+            <th>Action</th>
+            <th>Date</th>
+            <th>Driver</th>
+            <th>Details</th>
+            <th>Source</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <!-- ===== CLOSED / DISCONTINUED ===== -->
+          <tr>
+            <td><span class="inst-name">University of Kent</span></td>
+            <td class="region-tag">South East England</td>
+            <td>Anthropology (all programmes)</td>
+            <td><span class="level-badge">UG</span> <span class="level-badge">PGT</span> <span class="level-badge">PGR</span></td>
+            <td><span class="status-badge status-closed">Closed</span></td>
+            <td>Programme discontinued</td>
+            <td>2024</td>
+            <td>Financial deficit</td>
+            <td class="detail-text">The School of Anthropology and Conservation was closed in 2024 as part of restructuring driven by a projected £31m deficit. The department had operated for 60 years, produced over 160 PhDs, and was rated world-leading in REF 2021. All UG/PG anthropology programmes phased out from 2024–25.</td>
+            <td><a class="source-link" href="https://www.timeshighereducation.com/news/kent-saves-languages-confirms-anthropology-and-philosophy-axe" target="_blank">Times Higher Education</a></td>
+          </tr>
+
+          <tr>
+            <td><span class="inst-name">Bournemouth University</span></td>
+            <td class="region-tag">South West England</td>
+            <td>Archaeology and Anthropology BA</td>
+            <td><span class="level-badge">UG</span></td>
+            <td><span class="status-badge status-suspended">Admissions paused</span></td>
+            <td>Closed to new registrations</td>
+            <td>March 2025</td>
+            <td>Low enrolment / restructuring</td>
+            <td class="detail-text">The BA Archaeology and Anthropology programme was closed to new registrations in March 2025 alongside several other humanities programmes. The BSc Anthropology and BSc Archaeological/Anthropological/Forensic Sciences programmes remain active.</td>
+            <td><a class="source-link" href="https://qmucu.org/qmul-transformation/uk-he-shrinking/" target="_blank">QMUCU HE Shrinking</a></td>
+          </tr>
+
+          <tr>
+            <td><span class="inst-name">Queen Mary University of London</span></td>
+            <td class="region-tag">London</td>
+            <td>Anthropology-related programmes</td>
+            <td><span class="level-badge">Multiple</span></td>
+            <td><span class="status-badge status-closed">Closed</span></td>
+            <td>Department dissolved</td>
+            <td>March 2024</td>
+            <td>Financial deficit / restructuring</td>
+            <td class="detail-text">QMUL announced the cutting of anthropology alongside several other AHSS departments in late March 2024. The closure was part of broader institutional restructuring, following financial pressures from lower-than-expected recruitment.</td>
+            <td><a class="source-link" href="https://qmucu.org/qmul-transformation/uk-he-shrinking/" target="_blank">QMUCU</a></td>
+          </tr>
+
+          <!-- ===== UNDER PRESSURE / STAFF CUTS ===== -->
+          <tr>
+            <td><span class="inst-name">Goldsmiths, University of London</span></td>
+            <td class="region-tag">London</td>
+            <td>Anthropology BA</td>
+            <td><span class="level-badge">UG</span> <span class="level-badge">PGT</span> <span class="level-badge">PGR</span></td>
+            <td><span class="status-badge status-cuts">Staff reductions</span></td>
+            <td>Major staff cuts (Transformation Programme)</td>
+            <td>2024</td>
+            <td>Financial deficit / low enrolment</td>
+            <td class="detail-text">The 2024 'Transformation Programme' targeted 132 FTE posts across the institution (17% of staff). Anthropology was among departments facing up to 50% staff reductions. UCU prevented compulsory redundancies for 2024/25 but the department remains significantly reduced.</td>
+            <td><a class="source-link" href="https://www.timeshighereducation.com/news/michael-rosen-attacks-unbearable-goldsmiths-job-cuts" target="_blank">Times Higher Education</a></td>
+          </tr>
+
+          <tr>
+            <td><span class="inst-name">Oxford Brookes University</span></td>
+            <td class="region-tag">South East England</td>
+            <td>Anthropology (joint programmes)</td>
+            <td><span class="level-badge">UG</span></td>
+            <td><span class="status-badge status-threat">Under pressure</span></td>
+            <td>Staff reductions (voluntary)</td>
+            <td>2024</td>
+            <td>Financial deficit</td>
+            <td class="detail-text">Oxford Brookes announced cuts of up to 48 academic staff across AHSS in late 2023. Anthropology staff took voluntary redundancy or reduced hours, avoiding compulsory redundancies. The programme continues but with reduced capacity.</td>
+            <td><a class="source-link" href="https://www.ucu.org.uk/article/13295/Strike-ballot-threat-in-fight-against-Oxford-Brookes-cuts" target="_blank">UCU</a></td>
+          </tr>
+
+          <!-- ===== MONITORING ===== -->
+          <tr>
+            <td><span class="inst-name">University of Roehampton</span></td>
+            <td class="region-tag">London</td>
+            <td>Anthropology BSc</td>
+            <td><span class="level-badge">UG</span> <span class="level-badge">PGT</span></td>
+            <td><span class="status-badge status-monitoring">Monitoring</span></td>
+            <td>Institutional financial pressure</td>
+            <td>2025</td>
+            <td>Financial pressure</td>
+            <td class="detail-text">Roehampton has faced broader institutional financial pressures. The anthropology programme (6 social anthropologists, 6 biological anthropologists) remains active but is in an institution under wider financial strain.</td>
+            <td><a class="source-link" href="https://www.roehampton.ac.uk/study/academic-areas/arts-humanities-and-social-sciences/humanities-and-social-sciences/" target="_blank">Roehampton</a></td>
+          </tr>
+
+          <tr>
+            <td><span class="inst-name">University of East Anglia</span></td>
+            <td class="region-tag">East of England</td>
+            <td>Anthropology with International Development BA</td>
+            <td><span class="level-badge">UG</span></td>
+            <td><span class="status-badge status-monitoring">Monitoring</span></td>
+            <td>Limited provision</td>
+            <td>–</td>
+            <td>–</td>
+            <td class="detail-text">UEA offers anthropology through combined programmes rather than as a standalone single-honours degree. Provision is more limited than at other Russell Group institutions.</td>
+            <td><a class="source-link" href="https://www.uea.ac.uk" target="_blank">UEA</a></td>
+          </tr>
+
+          <!-- ===== ACTIVE PROGRAMMES ===== -->
+          <tr>
+            <td><span class="inst-name">University of Cambridge</span></td>
+            <td class="region-tag">East of England</td>
+            <td>Archaeology &amp; Anthropology; Social Anthropology</td>
+            <td><span class="level-badge">UG</span> <span class="level-badge">PGT</span> <span class="level-badge">PGR</span></td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+            <td class="detail-text">Ranked #1 in the Complete University Guide 2026. The Department of Social Anthropology is among the world's leading departments with a comprehensive curriculum.</td>
+            <td><a class="source-link" href="https://www.socanth.cam.ac.uk/" target="_blank">Cambridge</a></td>
+          </tr>
+
+          <tr>
+            <td><span class="inst-name">University of Oxford</span></td>
+            <td class="region-tag">South East England</td>
+            <td>Archaeology &amp; Anthropology; Social Anthropology</td>
+            <td><span class="level-badge">UG</span> <span class="level-badge">PGT</span> <span class="level-badge">PGR</span></td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+            <td class="detail-text">School of Anthropology and Museum Ethnography offers the full range of programmes. Strong interdisciplinary emphasis and world-class research standing.</td>
+            <td><a class="source-link" href="https://www.anthro.ox.ac.uk/" target="_blank">Oxford</a></td>
+          </tr>
+
+          <tr>
+            <td><span class="inst-name">London School of Economics (LSE)</span></td>
+            <td class="region-tag">London</td>
+            <td>Social Anthropology BA; Anthropology &amp; Law</td>
+            <td><span class="level-badge">UG</span> <span class="level-badge">PGT</span> <span class="level-badge">PGR</span></td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+            <td class="detail-text">One of the leading social anthropology departments globally with strong multidisciplinary focus and international research perspectives.</td>
+            <td><a class="source-link" href="https://www.lse.ac.uk/anthropology" target="_blank">LSE</a></td>
+          </tr>
+
+          <tr>
+            <td><span class="inst-name">UCL (University College London)</span></td>
+            <td class="region-tag">London</td>
+            <td>Anthropology BSc/BA</td>
+            <td><span class="level-badge">UG</span> <span class="level-badge">PGT</span> <span class="level-badge">PGR</span></td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+            <td class="detail-text">One of the largest anthropology departments in the UK, offering both social and biological anthropology. Part of the Faculty of Social and Historical Sciences.</td>
+            <td><a class="source-link" href="https://www.ucl.ac.uk/social-historical-sciences/anthropology" target="_blank">UCL</a></td>
+          </tr>
+
+          <tr>
+            <td><span class="inst-name">SOAS University of London</span></td>
+            <td class="region-tag">London</td>
+            <td>Social Anthropology BA; Anthropology &amp; Sociology</td>
+            <td><span class="level-badge">UG</span> <span class="level-badge">PGT</span> <span class="level-badge">PGR</span></td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+            <td class="detail-text">Department of Anthropology and Sociology within the School of Anthropology, Media and Gender. Known for regional specialisms in Africa, Asia and the Middle East.</td>
+            <td><a class="source-link" href="https://www.soas.ac.uk/anthropology/" target="_blank">SOAS</a></td>
+          </tr>
+
+          <tr>
+            <td><span class="inst-name">University of Edinburgh</span></td>
+            <td class="region-tag">Scotland</td>
+            <td>Social Anthropology MA (Hons)</td>
+            <td><span class="level-badge">UG</span> <span class="level-badge">PGT</span> <span class="level-badge">PGR</span></td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+            <td class="detail-text">Ranked in Europe's top 6 for anthropology (QS 2026). The department offers a distinctive four-year Scottish MA Honours programme.</td>
+            <td><a class="source-link" href="https://www.ed.ac.uk/social-political-science/subjects/social-anthropology" target="_blank">Edinburgh</a></td>
+          </tr>
+
+          <tr>
+            <td><span class="inst-name">University of St Andrews</span></td>
+            <td class="region-tag">Scotland</td>
+            <td>Social Anthropology MA (Hons)</td>
+            <td><span class="level-badge">UG</span> <span class="level-badge">PGT</span> <span class="level-badge">PGR</span></td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+            <td class="detail-text">Ranked #1 in Scotland and #1 in the UK (Times/Sunday Times Good University Guide 2026). 92% of research rated world-leading or internationally excellent in REF 2021.</td>
+            <td><a class="source-link" href="https://www.st-andrews.ac.uk/social-anthropology/" target="_blank">St Andrews</a></td>
+          </tr>
+
+          <tr>
+            <td><span class="inst-name">University of Aberdeen</span></td>
+            <td class="region-tag">Scotland</td>
+            <td>Anthropology MA (Hons); Anthropology &amp; Archaeology</td>
+            <td><span class="level-badge">UG</span> <span class="level-badge">PGT</span> <span class="level-badge">PGR</span></td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+            <td class="detail-text">Ranked in the Global Top 100 for Anthropology (QS 2026) and 3rd in the UK (Guardian 2025). Research spans regions from Canada and Central Asia to South America and the Himalayas.</td>
+            <td><a class="source-link" href="https://www.abdn.ac.uk/socsci/disciplines/anthropology/" target="_blank">Aberdeen</a></td>
+          </tr>
+
+          <tr>
+            <td><span class="inst-name">University of Glasgow</span></td>
+            <td class="region-tag">Scotland</td>
+            <td>Social Anthropology (within Sociology)</td>
+            <td><span class="level-badge">PGT</span> <span class="level-badge">PGR</span></td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+            <td class="detail-text">Social anthropology is taught within the School of Social and Political Sciences. Offers MSc Social Anthropology and PhD supervision but no standalone UG programme.</td>
+            <td><a class="source-link" href="https://www.gla.ac.uk/schools/social-political-sciences/" target="_blank">Glasgow</a></td>
+          </tr>
+
+          <tr>
+            <td><span class="inst-name">Durham University</span></td>
+            <td class="region-tag">North East England</td>
+            <td>Anthropology BSc/BA; joint programmes</td>
+            <td><span class="level-badge">UG</span> <span class="level-badge">PGT</span> <span class="level-badge">PGR</span></td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+            <td class="detail-text">One of the largest UK departments. Combines social, biological and medical anthropology. Ranked 5th (Guardian 2025), 45% world-leading (REF 2021).</td>
+            <td><a class="source-link" href="https://www.durham.ac.uk/departments/academic/anthropology/" target="_blank">Durham</a></td>
+          </tr>
+
+          <tr>
+            <td><span class="inst-name">University of Manchester</span></td>
+            <td class="region-tag">North West England</td>
+            <td>Social Anthropology BA</td>
+            <td><span class="level-badge">UG</span> <span class="level-badge">PGT</span> <span class="level-badge">PGR</span></td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+            <td class="detail-text">Ranked 9th in CUG 2026. Strong tradition in the social sciences with the Granada Centre for Visual Anthropology and established ethnographic fieldwork programmes.</td>
+            <td><a class="source-link" href="https://www.socialsciences.manchester.ac.uk/social-anthropology/" target="_blank">Manchester</a></td>
+          </tr>
+
+          <tr>
+            <td><span class="inst-name">University of Sussex</span></td>
+            <td class="region-tag">South East England</td>
+            <td>Anthropology BA; joint programmes</td>
+            <td><span class="level-badge">UG</span> <span class="level-badge">PGT</span> <span class="level-badge">PGR</span></td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+            <td class="detail-text">The largest UK department focused solely on social anthropology. Ranked 9th in the UK (QS 2025). Located within the School of Global Studies.</td>
+            <td><a class="source-link" href="https://www.sussex.ac.uk/anthropology/" target="_blank">Sussex</a></td>
+          </tr>
+
+          <tr>
+            <td><span class="inst-name">University of Bristol</span></td>
+            <td class="region-tag">South West England</td>
+            <td>Anthropology BA; Archaeology &amp; Anthropology</td>
+            <td><span class="level-badge">UG</span> <span class="level-badge">PGT</span> <span class="level-badge">PGR</span></td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+            <td class="detail-text">Department of Anthropology and Archaeology takes a global, four-field approach combining archaeology with evolutionary, social, and linguistic anthropology.</td>
+            <td><a class="source-link" href="https://www.bristol.ac.uk/anthropology/" target="_blank">Bristol</a></td>
+          </tr>
+
+          <tr>
+            <td><span class="inst-name">University of Birmingham</span></td>
+            <td class="region-tag">West Midlands</td>
+            <td>Social Anthropology BA</td>
+            <td><span class="level-badge">UG</span> <span class="level-badge">PGT</span> <span class="level-badge">PGR</span></td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+            <td class="detail-text">Offers BA Social Anthropology within the Department of African Studies and Anthropology (DASA). Strong focus on global perspectives with particular strengths in African studies.</td>
+            <td><a class="source-link" href="https://www.birmingham.ac.uk/undergraduate/courses/dasa/social-anthropology" target="_blank">Birmingham</a></td>
+          </tr>
+
+          <tr>
+            <td><span class="inst-name">University of Exeter</span></td>
+            <td class="region-tag">South West England</td>
+            <td>Anthropology BA</td>
+            <td><span class="level-badge">UG</span> <span class="level-badge">PGT</span> <span class="level-badge">PGR</span></td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+            <td class="detail-text">Offers Anthropology BA within the Department of Sociology, Philosophy and Anthropology. Research strengths in medical anthropology and environmental issues.</td>
+            <td><a class="source-link" href="https://www.exeter.ac.uk/study/undergraduate/courses/anthropology/" target="_blank">Exeter</a></td>
+          </tr>
+
+          <tr>
+            <td><span class="inst-name">Brunel University London</span></td>
+            <td class="region-tag">London</td>
+            <td>Anthropology BSc (multiple pathways)</td>
+            <td><span class="level-badge">UG</span> <span class="level-badge">PGT</span> <span class="level-badge">PGR</span></td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+            <td class="detail-text">Offers pathways in Childhood/Youth/Education, Development/War/Humanitarian Assistance, and Global Health. Consistently ranks in the top quartile for student satisfaction.</td>
+            <td><a class="source-link" href="https://www.brunel.ac.uk/anthropology" target="_blank">Brunel</a></td>
+          </tr>
+
+          <tr>
+            <td><span class="inst-name">King's College London</span></td>
+            <td class="region-tag">London</td>
+            <td>Anthropology (within Global Affairs)</td>
+            <td><span class="level-badge">UG</span> <span class="level-badge">PGT</span></td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+            <td class="detail-text">Department of Anthropology dedicated to comprehensive exploration of human societies covering cultural, social, and political aspects.</td>
+            <td><a class="source-link" href="https://www.kcl.ac.uk/global-affairs" target="_blank">King's</a></td>
+          </tr>
+
+          <tr>
+            <td><span class="inst-name">University of Plymouth</span></td>
+            <td class="region-tag">South West England</td>
+            <td>Anthropology BA</td>
+            <td><span class="level-badge">UG</span></td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+            <td class="detail-text">Offers BA (Hons) Anthropology as a standalone undergraduate degree within the Faculty of Arts, Humanities and Business.</td>
+            <td><a class="source-link" href="https://www.plymouth.ac.uk/courses/undergraduate/ba-anthropology" target="_blank">Plymouth</a></td>
+          </tr>
+
+          <tr>
+            <td><span class="inst-name">Queen's University Belfast</span></td>
+            <td class="region-tag">Northern Ireland</td>
+            <td>Social Anthropology (within Social Sciences)</td>
+            <td><span class="level-badge">UG</span> <span class="level-badge">PGT</span> <span class="level-badge">PGR</span></td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+            <td class="detail-text">Offers anthropology within the School of History, Anthropology, Philosophy and Politics. The only Northern Ireland institution with anthropology provision.</td>
+            <td><a class="source-link" href="https://www.qub.ac.uk/" target="_blank">QUB</a></td>
+          </tr>
+
+          <tr>
+            <td><span class="inst-name">University of Dundee</span></td>
+            <td class="region-tag">Scotland</td>
+            <td>Forensic Anthropology MSc</td>
+            <td><span class="level-badge">PGT</span></td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+            <td class="detail-text">Offers specialist postgraduate provision in forensic anthropology through the Centre for Anatomy and Human Identification (CAHID).</td>
+            <td><a class="source-link" href="https://www.dundee.ac.uk/" target="_blank">Dundee</a></td>
+          </tr>
+
+          <tr>
+            <td><span class="inst-name">University of Bradford</span></td>
+            <td class="region-tag">Yorkshire &amp; the Humber</td>
+            <td>Archaeological &amp; Forensic Sciences; Osteology</td>
+            <td><span class="level-badge">UG</span> <span class="level-badge">PGT</span></td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+            <td class="detail-text">Offers physical/forensic anthropology through archaeology and forensic science programmes. Particular strengths in biological anthropology and human osteology.</td>
+            <td><a class="source-link" href="https://www.bradford.ac.uk/" target="_blank">Bradford</a></td>
+          </tr>
+
+          <tr>
+            <td><span class="inst-name">University of Southampton</span></td>
+            <td class="region-tag">South East England</td>
+            <td>Anthropology (within Archaeology)</td>
+            <td><span class="level-badge">UG</span> <span class="level-badge">PGT</span></td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+            <td class="detail-text">Anthropology taught within the Department of Archaeology, with a particular focus on biological and evolutionary anthropology.</td>
+            <td><a class="source-link" href="https://www.southampton.ac.uk/" target="_blank">Southampton</a></td>
+          </tr>
+
+          <tr>
+            <td><span class="inst-name">University of Reading</span></td>
+            <td class="region-tag">South East England</td>
+            <td>Archaeology &amp; related programmes</td>
+            <td><span class="level-badge">UG</span> <span class="level-badge">PGT</span></td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+            <td class="detail-text">Anthropological content delivered through archaeology and related programmes within the Department of Archaeology.</td>
+            <td><a class="source-link" href="https://www.reading.ac.uk/" target="_blank">Reading</a></td>
+          </tr>
+
+          <tr>
+            <td><span class="inst-name">Liverpool John Moores University</span></td>
+            <td class="region-tag">North West England</td>
+            <td>Forensic Anthropology BSc</td>
+            <td><span class="level-badge">UG</span></td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+            <td class="detail-text">Offers specialist forensic anthropology provision as part of the School of Biological and Environmental Sciences.</td>
+            <td><a class="source-link" href="https://www.ljmu.ac.uk/" target="_blank">LJMU</a></td>
+          </tr>
+
+          <tr>
+            <td><span class="inst-name">University of Central Lancashire</span></td>
+            <td class="region-tag">North West England</td>
+            <td>Forensic Science &amp; Anthropology</td>
+            <td><span class="level-badge">UG</span></td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+            <td class="detail-text">Offers anthropology through combined forensic science and anthropology programmes.</td>
+            <td><a class="source-link" href="https://www.uclan.ac.uk/" target="_blank">UCLan</a></td>
+          </tr>
+
+          <tr>
+            <td><span class="inst-name">University of Winchester</span></td>
+            <td class="region-tag">South East England</td>
+            <td>Anthropology BA</td>
+            <td><span class="level-badge">UG</span></td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+            <td class="detail-text">Offers Anthropology as an undergraduate single-honours degree with a focus on cultural and social anthropology.</td>
+            <td><a class="source-link" href="https://www.winchester.ac.uk/" target="_blank">Winchester</a></td>
+          </tr>
+
+          <tr>
+            <td><span class="inst-name">University of Wales Trinity Saint David</span></td>
+            <td class="region-tag">Wales</td>
+            <td>Anthropology (related programmes)</td>
+            <td><span class="level-badge">UG</span></td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+            <td class="detail-text">Offers anthropology content within broader humanities and social science programmes. One of the few Welsh institutions with anthropological provision.</td>
+            <td><a class="source-link" href="https://www.uwtsd.ac.uk/" target="_blank">UWTSD</a></td>
+          </tr>
+
+          <tr>
+            <td><span class="inst-name">Bournemouth University</span></td>
+            <td class="region-tag">South West England</td>
+            <td>Anthropology BSc; Archaeological/Anthropological/Forensic Sciences BSc</td>
+            <td><span class="level-badge">UG</span> <span class="level-badge">PGT</span></td>
+            <td><span class="status-badge status-active">Active</span></td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+            <td class="detail-text">The standalone BSc Anthropology and BSc Archaeological, Anthropological and Forensic Sciences programmes remain active within the Department of Archaeology and Anthropology.</td>
+            <td><a class="source-link" href="https://www.bournemouth.ac.uk/study/courses/bsc-hons-anthropology" target="_blank">Bournemouth</a></td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+    <p class="last-updated">Last updated: May 2026. Data compiled from institutional websites, UCAS, Times Higher Education, UCU, the British Academy, and the ASA. This tracker records publicly reported changes only. If you have information about a programme change not listed here, please <a href="mailto:jamie.cross@glasgow.ac.uk">submit an update</a>.</p>
+
+    <!-- METHODOLOGY BOX -->
+    <div class="methodology" id="methodology">
+      <h3>Methodology &amp; Status Definitions</h3>
+      <p>This tracker documents publicly reported changes to anthropology programmes at UK higher education institutions. Status categories are defined as follows:</p>
+      <ul>
+        <li><strong>Active</strong> — The programme is recruiting students and operating normally.</li>
+        <li><strong>Monitoring</strong> — The programme is active but faces institutional pressures, limited provision, or is in a university under financial strain.</li>
+        <li><strong>Under pressure</strong> — Publicly reported financial pressures, voluntary redundancies, or restructuring affecting the department, but programme continues.</li>
+        <li><strong>Staff reductions</strong> — Confirmed staff cuts (voluntary or compulsory) that have reduced departmental capacity.</li>
+        <li><strong>Admissions paused</strong> — New student admissions have been temporarily or permanently suspended.</li>
+        <li><strong>Closed</strong> — The programme has been permanently discontinued or the department dissolved.</li>
+      </ul>
+      <p>Data sources include institutional announcements, Times Higher Education, UCU reports, UCAS listings, the Complete University Guide, the British Academy SHAPE Observatory, and the ASA's <em>Condition of UK Anthropology</em> (2023) report.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h3>UK Anthropology Watch</h3>
+        <p>A community project documenting changes to anthropology programmes across UK higher education. Inspired by the American Anthropological Association's <a href="https://americananthro.org/anthropology-watch/" target="_blank">Anthropology Watch</a>.</p>
+        <p style="margin-top: 12px;">This is an independent resource. Corrections and additions welcome.</p>
+      </div>
+      <div>
+        <h3>Key Organisations</h3>
+        <ul>
+          <li><a href="https://www.theasa.org/" target="_blank">Association of Social Anthropologists (ASA)</a></li>
+          <li><a href="https://therai.org.uk/" target="_blank">Royal Anthropological Institute (RAI)</a></li>
+          <li><a href="https://www.thebritishacademy.ac.uk/" target="_blank">The British Academy</a></li>
+          <li><a href="https://americananthro.org/" target="_blank">American Anthropological Association</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Key Reports</h3>
+        <ul>
+          <li><a href="https://www.theasa.org/downloads/Condtion%20of%20UK%20anthropology%202023.pdf" target="_blank">ASA Condition of UK Anthropology (2023)</a></li>
+          <li><a href="https://www.thebritishacademy.ac.uk/policy-and-research/british-academy-shape-observatory/cold-spots-mapping-inequality-in-shape-provision/" target="_blank">British Academy Cold Spots Report</a></li>
+          <li><a href="https://americananthro.org/anthropology-watch/" target="_blank">AAA Anthropology Watch (US)</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 UK Anthropology Watch. Data is provided for informational purposes and compiled from publicly available sources. Not affiliated with any institution.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- JS LIBRARIES -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/fixedheader/3.4.0/js/dataTables.fixedHeader.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+<script>
+$(document).ready(function() {
+  var isMobile = window.innerWidth < 768;
+
+  var table = $('#anthro-watch').DataTable({
+    order: [[4, 'asc'], [0, 'asc']],
+    lengthMenu: [10, 20, 25, 50, 100],
+    pageLength: isMobile ? 10 : 50,
+    scrollX: true,
+    fixedHeader: false,
+    autoWidth: false,
+    language: {
+      search: "Search all columns:",
+      lengthMenu: "Show _MENU_ programmes",
+      info: "Showing _START_ to _END_ of _TOTAL_ programmes",
+      infoEmpty: "No programmes found",
+      infoFiltered: "(filtered from _MAX_ total)"
+    },
+    columnDefs: [
+      { targets: 0, width: '150px' },
+      { targets: 1, width: '120px' },
+      { targets: 2, width: '190px' },
+      { targets: 3, width: '95px' },
+      { targets: 4, width: '110px' },
+      { targets: 5, width: '150px' },
+      { targets: 6, width: '80px' },
+      { targets: 7, width: '110px' },
+      { targets: 8, width: '340px' },
+      { targets: 9, width: '130px' }
+    ],
+    initComplete: function() {
+      // Force column alignment after render
+      this.api().columns.adjust();
+    }
+  });
+
+  // Custom status ordering
+  $.fn.dataTable.ext.type.order['status-pre'] = function(d) {
+    var stripped = $('<span>').html(d).text().trim();
+    switch(stripped) {
+      case 'Closed': return 1;
+      case 'Admissions paused': return 2;
+      case 'Staff reductions': return 3;
+      case 'Under pressure': return 4;
+      case 'Monitoring': return 5;
+      case 'Active': return 6;
+      default: return 7;
+    }
+  };
+
+  // Filter pills
+  window.filterTable = function(term) {
+    table.column(4).search(term).draw();
+
+    // Update pill styling
+    $('.pill').removeClass('active active-green active-amber active-red');
+    if (term === '') {
+      $('.pill').first().addClass('active');
+    } else if (term === 'Active') {
+      $('.pill').eq(1).addClass('active-green');
+    } else if (term === 'Under pressure') {
+      $('.pill').eq(2).addClass('active-amber');
+    } else if (term === 'Closed') {
+      $('.pill').eq(3).addClass('active-red');
+    } else {
+      $('.pill').eq(4).addClass('active-red');
+    }
+
+    // Update stats dynamically
+    updateStats();
+  };
+
+  function updateStats() {
+    var data = table.rows({ search: 'applied' }).data();
+    $('#stat-total').text(data.length);
+  }
+
+  // Smooth scroll for nav
+  $('.nav-tab').on('click', function(e) {
+    var href = $(this).attr('href');
+    if (href.startsWith('#')) {
+      e.preventDefault();
+      $('html, body').animate({ scrollTop: $(href).offset().top - 80 }, 400);
+      $('.nav-tab').removeClass('active');
+      $(this).addClass('active');
+    }
+  });
+});
+</script>
+</body>
+</html>
